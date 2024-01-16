@@ -4,7 +4,7 @@ services:
     container_name: postgres
     image: postgres
     environment:
-      POSTGRES_USER: amigoscode
+      POSTGRES_USER: ayoubbenayyad
       POSTGRES_PASSWORD: password
       PGDATA: /data/postgres
     volumes:
@@ -15,7 +15,28 @@ services:
       - db
     restart: unless-stopped
 
-
+  spring-boot-app:
+    container_name: pfa-backend
+    image: pfa-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/jwt_security
+    networks:
+      - db
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    depends_on:
+      - db
+  pfa-frontend:
+    container_name: pfa-frontend
+    image: pfa-frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - db
+    restart: unless-stopped
+    depends_on:
+      - spring-boot-app
 
 
 networks:
