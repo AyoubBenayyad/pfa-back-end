@@ -34,7 +34,7 @@ jobs:
       - name: Unit Tests
         run: mvn -B test --file pom.xml
         env:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/jwt_security
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5532/jwt_security
           SPRING_DATASOURCE_USERNAME: ayoubbenayyad
           SPRING_DATASOURCE_PASSWORD: password
 
@@ -43,7 +43,7 @@ jobs:
           mvn clean
           mvn -B package --file pom.xml
         env:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/jwt_security
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5532/jwt_security
           SPRING_DATASOURCE_USERNAME: ayoubbenayyad
           SPRING_DATASOURCE_PASSWORD: password
 
