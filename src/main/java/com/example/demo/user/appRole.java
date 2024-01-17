@@ -18,4 +18,8 @@ public class appRole {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String roleName;
+
+    public appRole(String role) {
+        this.roleName=role;
+    }
 }
