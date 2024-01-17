@@ -9,6 +9,18 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: ayoubbenayyad
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: jwt_security
+        ports:
+          - 5532:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
     steps:
       - name: checkout code
         uses: actions/checkout@v3
@@ -21,11 +33,18 @@ jobs:
 
       - name: Unit Tests
         run: mvn -B test --file pom.xml
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/jwt_security
+          SPRING_DATASOURCE_USERNAME: ayoubbenayyad
+          SPRING_DATASOURCE_PASSWORD: password
 
       - name: build app
         run: |
           mvn clean
           mvn -B package --file pom.xml
-
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/jwt_security
+          SPRING_DATASOURCE_USERNAME: ayoubbenayyad
+          SPRING_DATASOURCE_PASSWORD: password
 
 
