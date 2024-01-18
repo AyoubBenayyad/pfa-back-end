@@ -33,7 +33,7 @@ services:
     restart: unless-stopped
   pfa-frontend:
     container_name: pfa-frontend
-    image: pfa-frontend
+    image: ayoubbenayyad/pfa-frontend
     ports:
       - "3000:3000"
     networks:
