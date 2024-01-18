@@ -4,10 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 !**/src/main/**/application.yml
-!**/.github/workflows/**/main.yml
 
-docker-compose.yml
-**/main.yml
+**/docker-compose.yml
+**/.github/workflows/
 
 ### STS ###
 .apt_generated
