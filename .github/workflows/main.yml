@@ -14,9 +14,9 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_USER: ayoubbenayyad
+          POSTGRES_USER: username
           POSTGRES_PASSWORD: password
-          POSTGRES_DB: jwt_security
+          POSTGRES_DB: pfadb-tests
         ports:
           - 5532:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
@@ -34,8 +34,8 @@ jobs:
       - name: Unit Tests
         run: mvn -B test --file pom.xml
         env:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5532/jwt_security
-          SPRING_DATASOURCE_USERNAME: ayoubbenayyad
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5532/pfadb-tests
+          SPRING_DATASOURCE_USERNAME: username
           SPRING_DATASOURCE_PASSWORD: password
 
       - name: build app
@@ -43,8 +43,8 @@ jobs:
           mvn clean
           mvn -B package --file pom.xml
         env:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5532/jwt_security
-          SPRING_DATASOURCE_USERNAME: ayoubbenayyad
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5532/pfadb-tests
+          SPRING_DATASOURCE_USERNAME: username
           SPRING_DATASOURCE_PASSWORD: password
 
 
@@ -59,8 +59,8 @@ jobs:
       - name: Login to dockerhub
         uses: docker/login-action@v1
         with:
-         username: ${{secrets.DOCKER_HUB_USERNAME}}
-         password: ${{secrets.DOCKER_HUB_ACCESS_TOKEN}}
+          username: ${{secrets.DOCKER_HUB_USERNAME}}
+          password: ${{secrets.DOCKER_HUB_ACCESS_TOKEN}}
 
       - name: Push to dockerhub
         uses: docker/build-push-action@v2
