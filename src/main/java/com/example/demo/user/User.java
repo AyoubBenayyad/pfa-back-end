@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+
 
 @Data
 @Builder
@@ -31,6 +31,8 @@ public class User implements UserDetails {
     private String email;
     private String password;
 
+    private Boolean locked=false;
+    private Boolean enabled=false;
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<appRole> roles = new ArrayList<>();
 
@@ -55,7 +57,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !locked;
     }
 
     @Override
@@ -65,6 +67,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 }
