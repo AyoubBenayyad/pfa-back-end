@@ -1,7 +1,12 @@
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+
 spring:
   datasource:
-    url: jdbc:postgresql://postgres-sql:5432/pfadb
-    username: username
+    url: jdbc:postgresql://localhost:5532/jwt_security
+    username: ayoubbenayyad
     password: password
     driver-class-name: org.postgresql.Driver
   jpa:
@@ -13,3 +18,22 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  mail:
+    host: localhost
+    port: 1025
+    username: hello
+    password: hello
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust: "*"
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+
+
+

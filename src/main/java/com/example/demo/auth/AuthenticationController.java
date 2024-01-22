@@ -34,7 +34,7 @@ public class AuthenticationController {
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(@RequestBody authenticationRequest request){
         try {
-            if(request.getEmail() == "" || request.getPassword() == "") {
+            if(request.getEmail().isBlank() || request.getPassword().isBlank()) {
                 throw new BadCredentialsException("Please Enter All Fields");
             }
             AuthenticationResponse response = authenticationService.authenticate(request);
@@ -42,8 +42,10 @@ public class AuthenticationController {
         }catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
+    }
 
-
-
+    @GetMapping(path = "/confirm")
+    public String confirm(@RequestParam("token") String token) {
+        return authenticationService.confirmToken(token);
     }
 }
