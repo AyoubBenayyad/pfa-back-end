@@ -36,6 +36,14 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<appRole> roles = new ArrayList<>();
 
+    public User(long id, String firstname, String lastname, String mail, String password) {
+        this.id=id;
+        this.firstname=firstname;
+        this.Lastname=lastname;
+        this.password=password;
+        this.email=mail;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
