@@ -26,8 +26,8 @@ class UserRepositoryTest {
         User user = new User(Long.parseLong("1"),"IBRAHIM",
                 "BENZEKRI",
                 "test@gmail.com",
-                "password",
-                null);
+                "password"
+        );
         Optional<User> user2 = Optional.of(user);
         underTest.save(user);
 
@@ -48,8 +48,8 @@ class UserRepositoryTest {
         User user = new User(Long.parseLong("1"),"IBRAHIM",
                 "BENZEKRI",
                 "test@gmail.com",
-                "password",
-                null);
+                "password"
+                );
 
         underTest.save(user);
 
