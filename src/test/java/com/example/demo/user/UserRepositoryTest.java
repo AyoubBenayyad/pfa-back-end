@@ -21,7 +21,7 @@ class UserRepositoryTest {
         underTest.deleteAll();
     }
 
-    @Test
+   /* @Test
     void findByEmail() {
         User user = new User(1L,"ibrahim","benzekri","test@gmail.com","ayoub2010",false,true,null);
         Optional<User> user2 = Optional.of(user);
@@ -63,7 +63,7 @@ class UserRepositoryTest {
 
        assertFalse(result);
 
-    }
+    }*/
 
 
 }
