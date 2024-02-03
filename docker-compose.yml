@@ -1,53 +1,48 @@
 services:
-
   db:
-    container_name: postgres22
+    container_name: postgres-sql2
     image: postgres
     environment:
-      POSTGRES_USER: ayoubbenayyad
+      POSTGRES_USER: username
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: jwt_security
-      PGDATA: /data/postgres
+      POSTGRES_DB: pfa_db_vf
     volumes:
-      - db:/data/postgres
+      - db:/var/lib/postgresql/data
     ports:
       - "5332:5432"
     networks:
-      - db
-    restart: unless-stopped
+      - pfa-network
 
   spring-boot-app:
     container_name: pfa-backend
-    image: ayoubbenayyad/pfa-backend
+    image: pfa-backend
+    networks:
+      - pfa-network
+    ports:
+      - "8080:8080"
     depends_on:
       - db
     environment:
-      SPRING_DATASOURCE_USERNAME: ayoubbenayyad
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/pfa_db_vf
+      SPRING_DATASOURCE_USERNAME: username
       SPRING_DATASOURCE_PASSWORD: password
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/jwt_security
 
-    networks:
-      - db
-    ports:
-      - "8080:8080"
-    restart: unless-stopped
   pfa-frontend:
     container_name: pfa-frontend
-    image: ayoubbenayyad/pfa-frontend
+    image: pfa-frontend
     ports:
       - "3000:3000"
     networks:
-      - db
+      - pfa-network
     restart: unless-stopped
     depends_on:
       - spring-boot-app
 
 
 networks:
-  db:
+  pfa-network:
     driver: bridge
 
 
 volumes:
   db:
-    name: pfa-backend-db
