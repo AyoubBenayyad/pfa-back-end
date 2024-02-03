@@ -31,6 +31,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final appRoleRepo appRoleRepo;
+    private final CneRepo cneRepo;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailService emailService;
     public void addNewRole(appRole role){
@@ -45,7 +46,13 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(registerRequest request) {
 
-        if(request.getPassword().isBlank() || request.getFirstname().isBlank() || request.getLastname().isBlank() || !emailValidation(request.getEmail()))
+        if(
+                request.getPassword().isBlank() || request.getFirstname().isBlank()
+                || request.getLastname().isBlank() || !emailValidation(request.getEmail())
+                || request.getBio().isBlank() || request.getFiliere().isBlank()
+                || request.getNiveau().isBlank() || request.getCne().isBlank()
+                || request.getImage().isBlank()
+        )
         {
             throw new InvalidInputException("Invalid Inputs");
         }
@@ -53,6 +60,12 @@ public class AuthenticationService {
             if(userRepository.existsUserByEmail(request.getEmail())){
                 throw new DuplicateResource("User with email "+ request.getEmail()+ " already exits");
             }
+            if(!cneRepo.existsByCne(request.getCne())){
+                throw new InvalidInputException("No student found with cne: "+ request.getCne());
+            }else if(userRepository.existsUserByCne(cneRepo.findByCne(request.getCne()))){
+                throw new DuplicateResource("User with cne "+ request.getCne()+ " already exits");
+            }
+
             Collection<appRole> rolesOfUser = new ArrayList<>();
             appRole RoleName = appRoleRepo.findByRoleName("USER");
             Collection<appRole> list = new ArrayList<>();

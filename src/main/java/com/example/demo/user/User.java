@@ -31,8 +31,16 @@ public class User implements UserDetails {
     private String email;
     private String password;
 
+    @OneToOne(mappedBy = "user")
+    private CNE cne;
+
+    private String bio;
+    private String niveau;
+    private String filiere;
+    private String imageUrl;
     private Boolean locked=false;
     private Boolean enabled=false;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<appRole> roles = new ArrayList<>();
 
