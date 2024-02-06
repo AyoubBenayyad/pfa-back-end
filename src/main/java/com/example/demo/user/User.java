@@ -38,6 +38,8 @@ public class User implements UserDetails {
     private String niveau;
     private String filiere;
     private String imageUrl;
+    private String telephone;
+    private String adresse;
     private Boolean locked=false;
     private Boolean enabled=false;
 

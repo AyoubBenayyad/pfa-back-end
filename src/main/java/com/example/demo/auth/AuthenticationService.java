@@ -17,6 +17,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -34,6 +39,7 @@ public class AuthenticationService {
     private final CneRepo cneRepo;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailService emailService;
+    private static String UPLOADED_FOLDER = "src/main/resources/static/images/";
     public void addNewRole(appRole role){
         appRoleRepo.save(role);
     }
@@ -49,48 +55,84 @@ public class AuthenticationService {
         if(
                 request.getPassword().isBlank() || request.getFirstname().isBlank()
                 || request.getLastname().isBlank() || !emailValidation(request.getEmail())
-                || request.getBio().isBlank() || request.getFiliere().isBlank()
+                || request.getBiographie().isBlank() || request.getFiliere().isBlank()
                 || request.getNiveau().isBlank() || request.getCne().isBlank()
                 || request.getImage().isBlank()
         )
         {
             throw new InvalidInputException("Invalid Inputs");
         }
-        else{
-            if(userRepository.existsUserByEmail(request.getEmail())){
-                throw new DuplicateResource("User with email "+ request.getEmail()+ " already exits");
+        else {
+            if (userRepository.existsUserByEmail(request.getEmail())) {
+                throw new DuplicateResource("User with email " + request.getEmail() + " already exits");
             }
-            if(!cneRepo.existsByCne(request.getCne())){
-                throw new InvalidInputException("No student found with cne: "+ request.getCne());
-            }else if(userRepository.existsUserByCne(cneRepo.findByCne(request.getCne()))){
-                throw new DuplicateResource("User with cne "+ request.getCne()+ " already exits");
+            if (!cneRepo.existsByCne(request.getCne())) {
+                throw new InvalidInputException("No student found with cne: " + request.getCne());
+            } else if (userRepository.existsUserByCne(cneRepo.findByCne(request.getCne()))) {
+                throw new DuplicateResource("User with cne " + request.getCne() + " already exits");
             }
 
+            String uniqueFilename = null;
+            try {
+                // Decode Base64 image
+                String base64Image = request.getImage().split(",")[1];
+
+                byte[] decodedBytes = Base64.getDecoder().decode(base64Image);
+
+                // Generate unique filename
+                uniqueFilename = UUID.randomUUID().toString();
+
+                // Create directory if it doesn't exist
+                File directory = new File(UPLOADED_FOLDER);
+                if (!directory.exists()) {
+                    directory.mkdir();
+                }
+
+                // Save the image
+                Path path = Paths.get(UPLOADED_FOLDER + uniqueFilename + ".png");
+                Files.write(path, decodedBytes);
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             Collection<appRole> rolesOfUser = new ArrayList<>();
             appRole RoleName = appRoleRepo.findByRoleName("USER");
             Collection<appRole> list = new ArrayList<>();
             list.add(RoleName);
-            var user= User.builder()
+            var CNE=cneRepo.findByCne(request.getCne());
+            var user = User.builder()
                     .firstname(request.getFirstname())
                     .Lastname(request.getLastname())
                     .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
+                    .telephone(request.getTelephone())
+                    .cne(CNE)
+                    .bio(request.getBiographie())
+                    .adresse(request.getAdresse())
+                    .filiere(request.getFiliere())
+                    .niveau(request.getNiveau())
+                    .imageUrl(UPLOADED_FOLDER + uniqueFilename + ".png")
                     .enabled(false)
                     .locked(false)
                     .roles(list)
                     .build();
             userRepository.save(user);
 
+            CNE.setUser(user);
+            cneRepo.save(CNE);
+
+
             String token = UUID.randomUUID().toString();
             ConfirmationToken confirmationToken = new ConfirmationToken(
                     token,
                     LocalDateTime.now(),
-                    LocalDateTime.now().plusMinutes(5),
+                    LocalDateTime.now().plusMinutes(15),
                     user
             );
             confirmationTokenService.saveConfirmationToken(confirmationToken);
             String link = "http://localhost:8080/api/v1/auth/confirm?token=" + token;
-            emailService.send(request.getEmail(),buildEmail(request.getLastname(),link));
+            emailService.send(request.getEmail(), buildEmail(request.getLastname(), link));
             var jwtToken = jwtService.generateToken(user);
 
             return AuthenticationResponse.builder()

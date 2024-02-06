@@ -14,9 +14,11 @@ public class registerRequest {
     private String firstname;
     private String lastname;
     private String email;
+    private String telephone;
+    private String adresse;
     private String password;
     private String cne;
-    private String bio;
+    private String biographie;
     private String niveau;
     private String filiere;
     private String image;
