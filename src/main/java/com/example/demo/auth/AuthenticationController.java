@@ -2,12 +2,15 @@ package com.example.demo.auth;
 
 import com.example.demo.Exceptions.DuplicateResource;
 import com.example.demo.Exceptions.InvalidInputException;
+import com.example.demo.Rating.RatingServiceImpl;
+import com.example.demo.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -15,6 +18,11 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
+    private final RatingServiceImpl ratingService;
+
+
+
+
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody registerRequest request) throws Exception {
@@ -42,6 +50,11 @@ public class AuthenticationController {
         }catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
+    }
+
+    @GetMapping("/users")
+    public List<User> gettingUsers(){
+        return authenticationService.getUsers();
     }
 
     @GetMapping(path = "/confirm")
