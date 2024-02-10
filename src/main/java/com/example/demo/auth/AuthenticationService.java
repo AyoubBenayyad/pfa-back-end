@@ -141,6 +141,10 @@ public class AuthenticationService {
 
     }
 
+    public List<User> getUsers(){
+        return userRepository.findAll();
+    }
+
     public AuthenticationResponse authenticate(authenticationRequest request) {
         try{
             authenticationManager.authenticate(
