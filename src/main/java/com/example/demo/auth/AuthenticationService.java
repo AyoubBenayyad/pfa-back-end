@@ -39,7 +39,7 @@ public class AuthenticationService {
     private final CneRepo cneRepo;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailService emailService;
-    private static String UPLOADED_FOLDER = "src/main/resources/static/images/";
+    private static String UPLOADED_FOLDER = "C:/Users/ayoub/Desktop/pfa-storage/";;
     public void addNewRole(appRole role){
         appRoleRepo.save(role);
     }
@@ -86,6 +86,8 @@ public class AuthenticationService {
                 File directory = new File(UPLOADED_FOLDER);
                 if (!directory.exists()) {
                     directory.mkdir();
+                }else{
+                    System.out.println("folder exists");
                 }
 
                 // Save the image
