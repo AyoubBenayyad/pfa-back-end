@@ -112,7 +112,7 @@ public class AuthenticationService {
                     .adresse(request.getAdresse())
                     .filiere(request.getFiliere())
                     .niveau(request.getNiveau())
-                    .imageUrl(UPLOADED_FOLDER + uniqueFilename + ".png")
+                    .imageUrl(uniqueFilename + ".png")
                     .enabled(false)
                     .locked(false)
                     .roles(list)
