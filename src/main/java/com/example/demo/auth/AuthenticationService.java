@@ -39,7 +39,7 @@ public class AuthenticationService {
     private final CneRepo cneRepo;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailService emailService;
-    private static String UPLOADED_FOLDER = "C:/Users/ayoub/Desktop/pfa-storage/";;
+    private static String UPLOADED_FOLDER = "/images/";
     public void addNewRole(appRole role){
         appRoleRepo.save(role);
     }

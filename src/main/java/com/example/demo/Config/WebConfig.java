@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/images/**")
-                .addResourceLocations("file:///C:/Users/ayoub/Desktop/pfa-storage/");
+                .addResourceLocations("file:/images/");
     }
     @Bean
     public CorsFilter corsFilter() {
