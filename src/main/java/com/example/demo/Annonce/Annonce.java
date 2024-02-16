@@ -6,9 +6,7 @@ import com.example.demo.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Setter
@@ -31,6 +29,9 @@ public class Annonce {
 
     @OneToMany(mappedBy = "postCommented")
     Set<Comment> comments = new HashSet<>();
+
+    @OneToMany(mappedBy = "image")
+    List<Photos> photos = new ArrayList<>();
 
     public Annonce(String title, String description, Date publicationDate) {
         Title = title;

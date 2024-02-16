@@ -25,6 +25,8 @@ public class AnnonceController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
+
+
         annonceService.addAnnonce(annonceRequest,username);
 
         return ResponseEntity.ok("Post registred successfully");
