@@ -32,8 +32,6 @@ public class UserProfileController {
         }catch(Exception e){
             throw new Exception(e.getMessage());
         }
-
-
     }
 
     @GetMapping("/followers")
