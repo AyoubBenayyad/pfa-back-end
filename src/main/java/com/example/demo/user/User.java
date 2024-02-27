@@ -55,7 +55,7 @@ public class User implements UserDetails {
     private Collection<appRole> roles = new ArrayList<>();
 
 //follower and following----------------------------------------------------
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_followers",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -69,15 +69,15 @@ public class User implements UserDetails {
 //----------------------------------------------------------------------------
 
 //Rated and Rating------------------------------------------------------------
-    @OneToMany(mappedBy = "ratingUser",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "ratingUser",fetch = FetchType.LAZY)
     private Set<UserRating> RatingUsers = new HashSet<>();
 
-    @OneToMany(mappedBy = "ratedUser",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "ratedUser",fetch = FetchType.LAZY)
     private Set<UserRating> ratedUsers = new HashSet<>();
 //-----------------------------------------------------------------------------
 
 //one user can post multiple posts
-    @OneToMany(mappedBy = "userPosting",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userPosting",fetch = FetchType.LAZY)
     private Set<Annonce> annonces = new HashSet<>();
 
 //One user can comment multible comments to multiple posts
