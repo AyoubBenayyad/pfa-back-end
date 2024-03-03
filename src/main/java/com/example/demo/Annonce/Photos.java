@@ -18,9 +18,11 @@ public class Photos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
     String image;
+
     @ManyToOne
-    @JoinColumn(name = "annonce_Id")
+    @JoinColumn(name = "offre_Id")
     Annonce annonce;
 
     public Photos(String image,Annonce annonce){

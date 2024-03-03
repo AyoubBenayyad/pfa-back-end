@@ -32,7 +32,7 @@ public class AuthenticationController {
         try{
             boolean isvalid =  jwtService.isTokenNotExpired(req.getEmail());
             return ResponseEntity.ok(!isvalid);
-        }catch (ExpiredJwtException e){
+        }catch (Exception e){
             return ResponseEntity.ok(false);
         }
     }
