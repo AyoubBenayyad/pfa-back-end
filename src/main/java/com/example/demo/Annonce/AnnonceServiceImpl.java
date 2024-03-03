@@ -1,5 +1,10 @@
 package com.example.demo.Annonce;
 
+import com.example.demo.Annonce.Offre.Offre;
+import com.example.demo.Annonce.Offre.OffreType;
+import com.example.demo.Domains.Domain;
+import com.example.demo.Domains.DomainRepo;
+import com.example.demo.Exceptions.InvalidInputException;
 import com.example.demo.user.User;
 import com.example.demo.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +27,18 @@ public class AnnonceServiceImpl implements IannonceService{
     AnnonceRepo annonceRepo;
     @Autowired
     PhotosRepo photosRepo;
+    @Autowired
+    DomainRepo domainRepo;
+
+    private  OffreType convertOfferType(String type) {
+       if(OffreType.Job == OffreType.valueOf(type)){
+            return OffreType.Job;
+       }else if (OffreType.Internship == OffreType.valueOf(type)){
+           return OffreType.Internship;
+       }else {
+           throw new InvalidInputException("invalide Offer type");
+       }
+    }
 
     List<Photos> tempPhoto = new ArrayList<>();
     @Override
@@ -29,9 +46,34 @@ public class AnnonceServiceImpl implements IannonceService{
         Optional<User> user = userRepository.findByEmail(username);
         User userPosting = user.orElse(null);
 
-        Annonce annonce = new Annonce();
+        if(annonceRequest.getDomains().isEmpty() || annonceRequest.getTitle().isBlank()
+        || annonceRequest.getDescription().isBlank() || annonceRequest.getImages().isEmpty()
+        || annonceRequest.getCity().isBlank() || annonceRequest.getEntreprise().isBlank()
+        || annonceRequest.getType().isBlank()
+        ){
+            throw new InvalidInputException("Invalid inputs.");
+
+        }
+
+        Offre annonce = new Offre();
         annonce.setTitle(annonceRequest.getTitle());
         annonce.setDescription(annonceRequest.getDescription());
+        annonce.setCity(annonceRequest.getCity());
+        annonce.setEntreprise(annonceRequest.getEntreprise());
+        annonce.setTypeAnnonce(convertOfferType(annonceRequest.getType()) );
+
+        List<Domain> domains = new ArrayList<>();
+        for (String s: annonceRequest.getDomains()
+             ) {
+            domains.add(domainRepo.findByName(s));
+        }
+        for (Domain d: domains
+             ) {
+            d.getAnnonces().add(annonce);
+            domainRepo.save(d);
+            annonce.getDomains().add(d);
+
+        }
 
         try {
             // Assuming request.getImages() returns a list of Base64 encoded images

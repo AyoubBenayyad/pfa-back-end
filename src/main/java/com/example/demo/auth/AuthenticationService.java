@@ -1,6 +1,8 @@
 package com.example.demo.auth;
 
 import com.example.demo.Config.JwtService;
+import com.example.demo.Domains.Domain;
+import com.example.demo.Domains.DomainRepo;
 import com.example.demo.Exceptions.DuplicateResource;
 import com.example.demo.Exceptions.InvalidInputException;
 import com.example.demo.auth.email.EmailService;
@@ -8,6 +10,7 @@ import com.example.demo.auth.emailToken.ConfirmationToken;
 import com.example.demo.auth.emailToken.ConfirmationTokenService;
 import com.example.demo.user.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,6 +46,8 @@ public class AuthenticationService {
     public void addNewRole(appRole role){
         appRoleRepo.save(role);
     }
+    @Autowired
+    DomainRepo domainRepo;
 
     public void addRoleToUser(String email,String role){
         Optional<User> currentUser = userRepository.findByEmail(email);
@@ -57,7 +62,7 @@ public class AuthenticationService {
                 || request.getLastname().isBlank() || !emailValidation(request.getEmail())
                 || request.getBiographie().isBlank() || request.getFiliere().isBlank()
                 || request.getNiveau().isBlank() || request.getCne().isBlank()
-                || request.getImage().isBlank()
+                || request.getImage().isBlank() || request.getDomains().size() < 3
         )
         {
             throw new InvalidInputException("Invalid Inputs");
@@ -72,7 +77,9 @@ public class AuthenticationService {
                 throw new DuplicateResource("User with cne " + request.getCne() + " already exits");
             }
 
+
             String uniqueFilename = null;
+
             try {
                 // Decode Base64 image
                 String base64Image = request.getImage().split(",")[1];
@@ -102,6 +109,13 @@ public class AuthenticationService {
             appRole RoleName = appRoleRepo.findByRoleName("USER");
             Collection<appRole> list = new ArrayList<>();
             list.add(RoleName);
+        //domains list:
+            Set<Domain> domainsList = new HashSet<>();
+            for (String s: request.getDomains()
+            ) {
+                domainsList.add(domainRepo.findByName(s));
+            }
+
             var CNE=cneRepo.findByCne(request.getCne());
             var user = User.builder()
                     .firstname(request.getFirstname())
@@ -118,8 +132,17 @@ public class AuthenticationService {
                     .enabled(false)
                     .locked(false)
                     .roles(list)
+                    .domains(domainsList)
                     .build();
+
+
+
             userRepository.save(user);
+            for (Domain d: domainsList
+            ) {
+                d.getDomainUsers().add(user);
+                domainRepo.save(d);
+            }
 
             CNE.setUser(user);
             cneRepo.save(CNE);

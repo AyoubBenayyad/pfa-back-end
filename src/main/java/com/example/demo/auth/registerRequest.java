@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -22,4 +24,5 @@ public class registerRequest {
     private String niveau;
     private String filiere;
     private String image;
+    private List<String> domains;
 }

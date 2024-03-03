@@ -2,6 +2,7 @@ package com.example.demo.user;
 
 import com.example.demo.Annonce.Annonce;
 import com.example.demo.Comments.Comment;
+import com.example.demo.Domains.Domain;
 import com.example.demo.Rating.UserRating;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,7 +65,7 @@ public class User implements UserDetails {
     @JsonManagedReference
     private Set<User> followers = new HashSet<>();
     @JsonBackReference
-    @ManyToMany(mappedBy = "followers",fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "followers",fetch = FetchType.LAZY)
     private Set<User> following = new HashSet<>();
 //----------------------------------------------------------------------------
 
@@ -83,6 +84,15 @@ public class User implements UserDetails {
 //One user can comment multible comments to multiple posts
     @OneToMany(mappedBy = "userCommenting")
     private Set<Comment> comments = new HashSet<>();
+//liste of domains:
+@ManyToMany(fetch = FetchType.LAZY)
+@JoinTable(
+        name = "user_domain",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "domain_id")
+)
+@JsonManagedReference
+    private Set<Domain> domains = new HashSet<>();
 
     public User(long id, String firstname, String lastname, String mail, String password) {
         this.id=id;

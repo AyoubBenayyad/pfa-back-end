@@ -2,7 +2,9 @@ package com.example.demo.Annonce;
 
 
 import com.example.demo.Comments.Comment;
+import com.example.demo.Domains.Domain;
 import com.example.demo.user.User;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,6 +16,8 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "Type", discriminatorType = DiscriminatorType.STRING)
 public class Annonce {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +36,15 @@ public class Annonce {
 
     @OneToMany(mappedBy = "image")
     List<Photos> photos = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "annonce_domain",
+            joinColumns = @JoinColumn(name = "annonce_id"),
+            inverseJoinColumns = @JoinColumn(name = "domain_id")
+    )
+    @JsonManagedReference
+    Set<Domain> domains = new HashSet<>();
 
     public Annonce(String title, String description, Date publicationDate) {
         Title = title;
