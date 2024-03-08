@@ -44,6 +44,16 @@ public class UserProfileController {
         }catch(Exception e){
             throw new Exception(e.getMessage());
         }
-
+    }
+    @GetMapping("/following")
+    public ResponseEntity<?> getFollowing ( @AuthenticationPrincipal User user) throws Exception {
+        try{
+            List<FollowersResponse> followers = userProfileService.getFollowing(user.getId());
+            return  ResponseEntity.ok(followers);
+        }catch(BadCredentialsException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }
     }
 }

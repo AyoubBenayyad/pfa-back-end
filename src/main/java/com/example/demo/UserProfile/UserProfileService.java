@@ -41,6 +41,7 @@ public class UserProfileService {
                 .email(user.getEmail())
                 .cne(user.getCne().getCne())
                 .image(user.getImageUrl())
+                .followersNumber((int) user.getFollowers().stream().count())
                 .build();
     }
 
@@ -90,5 +91,26 @@ public class UserProfileService {
         return followersResponseList;
 
 
+    }
+
+    public List<FollowersResponse> getFollowing(Long id) {
+
+        Optional<User> userOptional = userRepository.findById(id);
+        if(userOptional == null){
+            throw new BadCredentialsException("user doesnt exist");
+        }
+        User user= userOptional.get();
+
+        List<FollowersResponse> followersResponseList=new ArrayList<>();
+        Set<User> followings = user.getFollowing();
+        for (User follower : followings) {
+
+            followersResponseList.add(FollowersResponse.builder().id(follower.getId())
+                    .name(follower.getFirstname()+ " "+ follower.getLastname())
+                    .image(follower.getImageUrl())
+                    .build());
+
+        }
+        return followersResponseList;
     }
 }

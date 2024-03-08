@@ -19,4 +19,5 @@ public class UserProfileResponse {
     private String niveau;
     private String filiere;
     private String image;
+    private int followersNumber;
 }
