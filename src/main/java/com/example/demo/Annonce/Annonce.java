@@ -34,7 +34,7 @@ public class Annonce {
     @OneToMany(mappedBy = "postCommented")
     Set<Comment> comments = new HashSet<>();
 
-    @OneToMany(mappedBy = "image")
+    @OneToMany(mappedBy = "annonce")
     List<Photos> photos = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)

@@ -56,4 +56,12 @@ public class UserProfileController {
             throw new Exception(e.getMessage());
         }
     }
+
+    @GetMapping("/ProfilePosts")
+    public ResponseEntity<?> getProfilePosts(@AuthenticationPrincipal User user){
+
+        List<ProfilePostReponse> profilePosts = userProfileService.getProfilePosts(user);
+        return ResponseEntity.ok(profilePosts);
+    }
+
 }

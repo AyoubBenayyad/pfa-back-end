@@ -22,7 +22,7 @@ import java.util.Date;
 public class AnnonceController {
 
     @Autowired
-    AnnonceServiceImpl annonceService;
+    private  AnnonceServiceImpl annonceService;
 
     @PostMapping("/offre")
     public ResponseEntity<?> addAnnonce(@RequestBody AnnonceRequest annonceRequest) throws Exception {
