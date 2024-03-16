@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface DomainRepo extends JpaRepository<Domain,Long> {
 Domain findByName(String name);
+boolean existsByName(String name);
 }

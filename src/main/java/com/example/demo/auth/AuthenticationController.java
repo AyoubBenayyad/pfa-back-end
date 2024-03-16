@@ -27,6 +27,7 @@ public class AuthenticationController {
     @Autowired
     private JwtService jwtService;
 
+
     @PostMapping("/valide")
     public ResponseEntity<?> validateToken(@RequestBody authenticationRequest req){
         try{
