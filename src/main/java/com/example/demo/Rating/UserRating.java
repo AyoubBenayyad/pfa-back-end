@@ -1,6 +1,8 @@
 package com.example.demo.Rating;
 
 import com.example.demo.user.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,10 +22,12 @@ public class UserRating {
 
     @ManyToOne
     @JoinColumn(name = "ratingUser_id")
+    @JsonBackReference
     private User ratingUser;
 
     @ManyToOne
     @JoinColumn(name = "ratedUser_id")
+    @JsonBackReference
     private User ratedUser;
 
     @Enumerated(EnumType.STRING)

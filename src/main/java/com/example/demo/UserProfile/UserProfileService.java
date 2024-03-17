@@ -129,7 +129,7 @@ public class UserProfileService {
         Set<Annonce> posts= ourUser.getAnnonces();
         for (Annonce annonce : TestPosts) {
 
-            Set<Domain> domains= annonce.getDomains();
+            List<Domain> domains= annonce.getDomains();
             List<String> domainNames=new ArrayList<>();
 
             for(Domain domain : domains){

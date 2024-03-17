@@ -1,6 +1,8 @@
 package com.example.demo.Annonce;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,9 +22,9 @@ public class Photos {
     Long id;
 
     String image;
-
     @ManyToOne
     @JoinColumn(name = "offre_Id")
+    @JsonBackReference
     Annonce annonce;
 
     public Photos(String image,Annonce annonce){

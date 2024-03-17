@@ -3,6 +3,9 @@ package com.example.demo.Comments;
 
 import com.example.demo.Annonce.Annonce;
 import com.example.demo.user.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,12 +26,15 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long Id;
 
+
     @ManyToOne
     @JoinColumn(name = "User_id")
+    @JsonBackReference
     User userCommenting;
 
     @ManyToOne
     @JoinColumn(name = "Post_id")
+    @JsonBackReference
     Annonce postCommented;
 
     String Comment_Content;

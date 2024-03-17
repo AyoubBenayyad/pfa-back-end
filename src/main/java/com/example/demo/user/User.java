@@ -42,7 +42,6 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "user")
     @JsonBackReference
     private CNE cne;
-
     private String bio;
     private String niveau;
     private String filiere;
@@ -53,6 +52,7 @@ public class User implements UserDetails {
     private Boolean enabled=false;
     private int nmbOfVotes = 0;
     private float rate = 0;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<appRole> roles = new ArrayList<>();
 
@@ -65,25 +65,33 @@ public class User implements UserDetails {
     )
     @JsonManagedReference
     private Set<User> followers = new HashSet<>();
-    @JsonBackReference
+
+
     @ManyToMany(mappedBy = "followers",fetch = FetchType.LAZY)
+    @JsonBackReference
     private Set<User> following = new HashSet<>();
 //----------------------------------------------------------------------------
 
-//Rated and Rating------------------------------------------------------------
+//Rated and Rating-----------------------------------------------------------
+
     @OneToMany(mappedBy = "ratingUser",fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Set<UserRating> RatingUsers = new HashSet<>();
 
+
     @OneToMany(mappedBy = "ratedUser",fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Set<UserRating> ratedUsers = new HashSet<>();
 //-----------------------------------------------------------------------------
 
 //one user can post multiple posts
     @OneToMany(mappedBy = "userPosting",fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Set<Annonce> annonces = new HashSet<>();
 
 //One user can comment multible comments to multiple posts
     @OneToMany(mappedBy = "userCommenting")
+    @JsonManagedReference
     private Set<Comment> comments = new HashSet<>();
 //liste of domains:
 @ManyToMany(fetch = FetchType.LAZY)

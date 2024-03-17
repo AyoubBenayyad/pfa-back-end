@@ -5,6 +5,8 @@ import com.example.demo.Comments.Comment;
 import com.example.demo.Domains.Domain;
 import com.example.demo.Vote.Vote;
 import com.example.demo.user.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,14 +30,19 @@ public class Annonce {
     @Temporal(TemporalType.DATE)
     Date publicationDate;
     int mark = 0;
+
+
     @ManyToOne
     @JoinColumn(name = "Posting_User")
+    @JsonBackReference
     User userPosting;
 
     @OneToMany(mappedBy = "postCommented")
-    Set<Comment> comments = new HashSet<>();
+    @JsonManagedReference
+    List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "annonce")
+    @JsonManagedReference
     List<Photos> photos = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -45,7 +52,7 @@ public class Annonce {
             inverseJoinColumns = @JoinColumn(name = "domain_id")
     )
     @JsonManagedReference
-    Set<Domain> domains = new HashSet<>();
+    List<Domain> domains = new ArrayList<>();
 
     @OneToMany(mappedBy = "post")
     @JsonManagedReference

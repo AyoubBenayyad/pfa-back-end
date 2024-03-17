@@ -21,11 +21,14 @@ public class Domain {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     private String name;
-    @JsonBackReference
+
+
     @ManyToMany(mappedBy = "domains",fetch = FetchType.LAZY)
+    @JsonBackReference
     private Set<User> DomainUsers = new HashSet<>();
-    @JsonBackReference
+
     @ManyToMany(mappedBy = "domains",fetch = FetchType.LAZY)
+    @JsonBackReference
     private  Set<Annonce> annonces = new HashSet<>();
 
     public Domain( String name) {
