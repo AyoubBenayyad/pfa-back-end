@@ -3,6 +3,7 @@ package com.example.demo.Annonce;
 
 import com.example.demo.Comments.Comment;
 import com.example.demo.Domains.Domain;
+import com.example.demo.Vote.Vote;
 import com.example.demo.user.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -53,6 +54,9 @@ public class Annonce {
     @JsonManagedReference
     List<Domain> domains = new ArrayList<>();
 
+    @OneToMany(mappedBy = "post")
+    @JsonManagedReference
+    private Set<Vote> votes;
     public Annonce(String title, String description, Date publicationDate) {
         Title = title;
         Description = description;

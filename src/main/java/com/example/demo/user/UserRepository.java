@@ -1,6 +1,7 @@
 package com.example.demo.user;
 
 import com.example.demo.Domains.Domain;
+import com.example.demo.Annonce.Annonce;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -54,4 +55,8 @@ public interface UserRepository  extends JpaRepository<User,Long> {
     @Query("UPDATE User u " +
             "SET u.enabled = TRUE WHERE u.email = ?1")
     int enableAppUser(String email);
+
+
+    @Query("SELECT a FROM Annonce a WHERE a.userPosting.id = :userId ORDER BY a.publicationDate DESC ")
+    List<Annonce> findAllAnnoncesByUserPostingOrderByPublicationDate(@Param("userId") Long userId);
 }

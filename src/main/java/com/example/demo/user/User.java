@@ -4,6 +4,7 @@ import com.example.demo.Annonce.Annonce;
 import com.example.demo.Comments.Comment;
 import com.example.demo.Domains.Domain;
 import com.example.demo.Rating.UserRating;
+import com.example.demo.Vote.Vote;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -101,6 +102,10 @@ public class User implements UserDetails {
 )
 @JsonManagedReference
     private Set<Domain> domains = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private Set<Vote> votes;
 
     public User(long id, String firstname, String lastname, String mail, String password) {
         this.id=id;

@@ -119,15 +119,15 @@ public class UserProfileService {
 
     public List<ProfilePostReponse> getProfilePosts(User user) {
         Optional<User> userOptional = userRepository.findById(user.getId());
-        if(userOptional == null){
+        if(userOptional.isEmpty()){
             throw new BadCredentialsException("user doesnt exist");
         }
         User ourUser= userOptional.get();
 
         List<ProfilePostReponse> profilePostsResponse=new ArrayList<>();
-
+        List<Annonce> TestPosts=userRepository.findAllAnnoncesByUserPostingOrderByPublicationDate(ourUser.getId());
         Set<Annonce> posts= ourUser.getAnnonces();
-        for (Annonce annonce : posts) {
+        for (Annonce annonce : TestPosts) {
 
             List<Domain> domains= annonce.getDomains();
             List<String> domainNames=new ArrayList<>();
@@ -154,5 +154,7 @@ public class UserProfileService {
         }
 
         return profilePostsResponse;
+
+
     }
 }
