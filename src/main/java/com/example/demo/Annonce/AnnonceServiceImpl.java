@@ -158,7 +158,7 @@ public class AnnonceServiceImpl implements IannonceService{
         User userConnected = user.orElse(null);
 
         Pageable pageable = PageRequest.
-                of(request.getPage() , 10);
+                of(request.getPage() , 3);
         OffreType postType;
         Domain domain;
         String city;
@@ -179,10 +179,10 @@ public class AnnonceServiceImpl implements IannonceService{
             city = request.getCity();
         }
         if (request.date.equals("Date-Earliest")) {
-             pageable = PageRequest.of(request.getPage(), 10, Sort.by("publicationDate").ascending());
+             pageable = PageRequest.of(request.getPage(), 3, Sort.by("publicationDate").ascending());
 
         } else if (request.date.equals("Date-Latest")) {
-             pageable = PageRequest.of(request.getPage(), 10, Sort.by("publicationDate").descending());
+             pageable = PageRequest.of(request.getPage(), 3, Sort.by("publicationDate").descending());
 
         }
 
