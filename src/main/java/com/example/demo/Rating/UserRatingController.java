@@ -1,5 +1,6 @@
 package com.example.demo.Rating;
 
+import com.example.demo.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,10 +10,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserRatingController {
 
     private final RatingServiceImpl ratingService;
@@ -22,13 +25,29 @@ public class UserRatingController {
     }
 
     @PostMapping(path = "/rate",produces = "application/json")
-    public ResponseEntity<?> Rate(@RequestBody RatingRequest request){
+    public ResponseEntity<?> Rate(@RequestBody RatingRequest request,@AuthenticationPrincipal User user) throws Exception {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
+        try{
 
-        ratingService.rateUser(request,username);
-        return ResponseEntity.ok("rated successfully");
+
+            ratingService.rateUser(request, user.getId());
+            return ResponseEntity.ok("rated successfully");
+        }
+        catch(Exception e){
+            throw new Exception(e.getMessage());
+        }
+
     }
 
-}
+    @GetMapping("/getUserRate/{userId}")
+    public ResponseEntity<?> getUserRating(@PathVariable Long userId) throws Exception {
+
+
+        int userRating = ratingService.getUserRating(userId);
+        Map<String, Integer> response = new HashMap<>();
+        response.put("rating", userRating);
+        return ResponseEntity.ok(response);
+    }
+
+
+    }

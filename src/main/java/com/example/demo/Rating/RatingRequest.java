@@ -11,6 +11,6 @@ import lombok.Data;
 public class RatingRequest {
 
     Long id_userRated;
-    StarRating rate;
+    int rate;
 }
 

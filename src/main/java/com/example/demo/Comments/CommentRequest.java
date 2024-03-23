@@ -7,9 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
+@AllArgsConstructor
 public class CommentRequest {
     private Long IdCommentedPost;
     private String comment;

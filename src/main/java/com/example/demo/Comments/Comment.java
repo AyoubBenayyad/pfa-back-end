@@ -13,6 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -36,6 +37,9 @@ public class Comment {
     @JoinColumn(name = "Post_id")
     @JsonBackReference
     Annonce postCommented;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date postedAt;
 
     String Comment_Content;
 }

@@ -116,21 +116,29 @@ public class User implements UserDetails {
     }
 
     //setter
-    public void setRate(float rate,boolean updateTest) {
+    public void setRate(float rate,float oldRate,boolean updateTest) {
 
-        if(this.nmbOfVotes == 0){
-            this.rate = rate;
-        }else {
-            this.rate = (this.rate+rate)/2;
-        }
+
         if(!updateTest){
+            if(this.nmbOfVotes == 0){
+                this.rate = rate;
+            }else {
+                this.rate= ((this.rate * this.nmbOfVotes)+ rate) / (this.nmbOfVotes+1);
+            }
             this.nmbOfVotes++;
+
+        }else{
+            if(this.nmbOfVotes == 0){
+                this.rate = rate;
+            }else {
+                this.rate= ((this.rate * this.nmbOfVotes) - oldRate + rate) / (this.nmbOfVotes);
+            }
         }
 
 
     }
 
-    public double getRate() {
+    public float getRate() {
         return rate;
     }
 
