@@ -250,8 +250,10 @@ public class AnnonceServiceImpl implements IannonceService{
     }
 
     @Override
-    public List<Intprofil> findUsers(String fname, String lname) {
-        List<User> users = userRepository.getSearchedUsers(fname,lname);
+    public List<Intprofil> findUsers(String fname, String lname,String username) {
+        Optional<User> user = userRepository.findByEmail(username);
+        User userConnected = user.orElse(null);
+        List<User> users = userRepository.getSearchedUsers(fname,lname,userConnected.getId());
         List<Intprofil> intprofils = new ArrayList<>();
         for (User u: users
              ) {

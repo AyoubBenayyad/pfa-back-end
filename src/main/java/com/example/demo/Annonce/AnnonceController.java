@@ -91,7 +91,10 @@ public class AnnonceController {
 
     @PostMapping("/search")
     public ResponseEntity<?> getUsers(@RequestBody UserSearch user){
-        return ResponseEntity.ok(annonceService.findUsers(user.getFname(),user.getLname()));
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        return ResponseEntity.ok(annonceService.findUsers(user.getFname(),user.getLname(),username));
     }
 
 
