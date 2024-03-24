@@ -13,5 +13,5 @@ public interface IannonceService {
     public void addQuestion(QuestionRequest request, String username);
     public List<OffreResponse> getPosts(FilterRequest request,String username);
     public List<Intprofil> getInterestingProfils(String username);
-    public List<Intprofil> findUsers(String fname,String lname);
+    public List<Intprofil> findUsers(String fname,String lname,String username);
 }

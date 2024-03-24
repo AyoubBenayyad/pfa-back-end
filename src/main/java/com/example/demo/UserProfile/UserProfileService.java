@@ -10,6 +10,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,6 +24,7 @@ public class UserProfileService {
 
     private final UserRepository userRepository;
 
+    private static String UPLOADED_FOLDER = "/images/";
 
     public UserProfileResponse getUser(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
@@ -154,7 +156,47 @@ public class UserProfileService {
         }
 
         return profilePostsResponse;
+    }
+
+    public void editUser(User user,EditRequest editRequest){
+        Optional<User> userOptional = userRepository.findById(user.getId());
+        if(userOptional.isEmpty()){
+            throw new BadCredentialsException("user doesnt exist");
+        }
+        User editedUser = userOptional.get();
+
+        editedUser.setFirstname(editRequest.getFirstname());
+        editedUser.setLastname(editRequest.getLastname());
+        editedUser.setBio(editRequest.getBio());
+        editedUser.setAdresse(editRequest.getAdress());
+        editedUser.setFiliere(editRequest.getFiliere());
+        editedUser.setEmail(editRequest.getEmail());
+        editedUser.setTelephone(editRequest.getTelephone());
+        editedUser.setNiveau(editRequest.getNiveau());
+        if(!editRequest.getImgUrl().isEmpty() && !editRequest.getImgUrl().equals(null)){
+            String uniqueFilename = null;
+
+            try {
+                // Decode Base64 image
+                String base64Image = editRequest.getImgUrl().split(",")[1];
+
+                byte[] decodedBytes = Base64.getDecoder().decode(base64Image);
+
+                // Generate unique filename
+                uniqueFilename = UUID.randomUUID().toString();
 
 
+
+                // Save the image
+                Path path = Paths.get(UPLOADED_FOLDER + uniqueFilename + ".png");
+                Files.write(path, decodedBytes);
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            editedUser.setImageUrl(uniqueFilename + ".png");
+        }
+        userRepository.save(editedUser);
     }
 }

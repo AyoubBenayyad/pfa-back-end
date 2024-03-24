@@ -82,4 +82,13 @@ public class UserProfileController {
 
     }
 
+    @PostMapping("/editProfile")
+    public ResponseEntity<?> editProfile(@AuthenticationPrincipal User user,@RequestBody EditRequest editRequest){
+      try {
+          userProfileService.editUser(user,editRequest);
+      }catch (Exception e){
+          return ResponseEntity.ok(e.getMessage());
+      }
+        return ResponseEntity.ok("Updated successfully");
+    }
 }
