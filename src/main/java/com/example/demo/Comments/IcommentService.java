@@ -8,4 +8,6 @@ public interface IcommentService {
     public void addComment(CommentRequest request,String email_commentingUser);
 
     List<CommentResponse> getPostComments(Long postId) throws Exception;
+
+    void deleteComment(Long commentId,Long DeleterId) throws Exception;
 }

@@ -62,7 +62,7 @@ public class UserProfileController {
     @GetMapping("/ProfilePosts")
     public ResponseEntity<?> getProfilePosts(@AuthenticationPrincipal User user){
 
-        List<ProfilePostReponse> profilePosts = userProfileService.getProfilePosts(user);
+        List<ProfilePostReponse> profilePosts = userProfileService.getProfilePosts(user.getId());
         return ResponseEntity.ok(profilePosts);
     }
 
@@ -82,4 +82,64 @@ public class UserProfileController {
 
     }
 
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getUsersById( @PathVariable Long userId) throws Exception {
+        try{
+
+            UserProfileResponse response = userProfileService.getUser(userId);
+            return ResponseEntity.ok(response);
+        }catch(BadCredentialsException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @GetMapping("/followers/{userId}")
+    public ResponseEntity<?> getUsersFollowers ( @PathVariable Long userId) throws Exception {
+        try{
+            List<FollowersResponse> followers = userProfileService.getFollowers(userId);
+            return  ResponseEntity.ok(followers);
+        }catch(BadCredentialsException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @GetMapping("/following/{userId}")
+    public ResponseEntity<?> getUsersFollowing ( @PathVariable Long userId) throws Exception {
+        try{
+            List<FollowersResponse> followers = userProfileService.getFollowing(userId);
+            return  ResponseEntity.ok(followers);
+        }catch(BadCredentialsException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @GetMapping("/ProfilePosts/{userId}")
+    public ResponseEntity<?> getProfilePosts(@PathVariable Long userId){
+
+        List<ProfilePostReponse> profilePosts = userProfileService.getProfilePosts(userId);
+        return ResponseEntity.ok(profilePosts);
+    }
+
+    @GetMapping("/isfollowing/{userId}")
+    public ResponseEntity<?> getProfilePosts(@PathVariable Long userId,@AuthenticationPrincipal User user){
+
+        try{
+            boolean following = userProfileService.isFollwing(user.getId(), userId);
+
+            HashMap<String,Boolean> result= new HashMap<>();
+            result.put("response",following);
+
+            return ResponseEntity.ok(following);
+        }catch (Exception e){
+            throw e;
+        }
+
+    }
 }

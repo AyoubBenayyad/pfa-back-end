@@ -62,6 +62,24 @@ public class CommentServiceImpl implements IcommentService{
 
         return comments;
     }
+
+    @Override
+    public void deleteComment(Long commentId,Long DeleterId) throws Exception {
+        Comment comment = commentRepo.findById(commentId)
+                .orElseThrow(() -> new NoSuchElementException("Comment with id " + commentId + " does not exist"));
+
+        Long PostOwnerId=comment.getPostCommented().getUserPosting().getId();
+
+        Long CommentPosterId= comment.getUserCommenting().getId();
+        if(CommentPosterId == DeleterId || PostOwnerId == DeleterId ){
+            commentRepo.delete(comment);
+        }else{
+            throw new Exception(" you dont have the right to delete this comment");
+        }
+
+
+    }
+
     public static String convertDateFormat(Date input) throws Exception {
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         SimpleDateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy, hh:mm a");

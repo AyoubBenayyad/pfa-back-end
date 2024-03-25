@@ -117,8 +117,8 @@ public class UserProfileService {
         return followersResponseList;
     }
 
-    public List<ProfilePostReponse> getProfilePosts(User user) {
-        Optional<User> userOptional = userRepository.findById(user.getId());
+    public List<ProfilePostReponse> getProfilePosts(Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
         if(userOptional.isEmpty()){
             throw new BadCredentialsException("user doesnt exist");
         }
@@ -156,5 +156,22 @@ public class UserProfileService {
         return profilePostsResponse;
 
 
+    }
+
+    public boolean isFollwing(Long id, Long userId) {
+
+        // there function is used to check if the logged user follows another user ( it is used in other users ProfilePage)
+
+        Optional<User> LoggedInUserOpt = userRepository.findById(id);
+        Optional<User> UserToCheckOpt = userRepository.findById(userId);
+
+        if(LoggedInUserOpt.isEmpty() || UserToCheckOpt.isEmpty()){
+            throw new NoSuchElementException("user not found");
+        }
+
+        if(LoggedInUserOpt.get().getFollowing().contains(UserToCheckOpt.get())){
+            return true;
+        }
+        return false;
     }
 }
