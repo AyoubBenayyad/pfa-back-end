@@ -62,7 +62,7 @@ public class UserProfileController {
     @GetMapping("/ProfilePosts")
     public ResponseEntity<?> getProfilePosts(@AuthenticationPrincipal User user){
 
-        List<ProfilePostReponse> profilePosts = userProfileService.getProfilePosts(user);
+        List<ProfilePostReponse> profilePosts = userProfileService.getProfilePosts(user.getId());
         return ResponseEntity.ok(profilePosts);
     }
 
