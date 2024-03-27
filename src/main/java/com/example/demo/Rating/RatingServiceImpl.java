@@ -120,13 +120,54 @@ public class RatingServiceImpl implements IRatingService{
     }
 
     @Override
-    public int getUserRating(Long userId) {
+    public RatingResponse getUserRating(Long userId) {
         Optional<User> user = userRepository.findById(userId);
         if( user.isEmpty()){
             throw new NoSuchElementException("user doesnt exist");
         }
 
-        return (int) Math.floor(user.get().getRate());
+
+        RatingResponse response = RatingResponse.builder().rating(user.get().getRate()).numberOfVotes(user.get().getNmbOfVotes()).build();
+
+        return response;
+    }
+
+    @Override
+    public int getRatingByCurrentUser(Long OnlineUserid, Long userId) {
+        Optional<User> userOpt = userRepository.findById(userId);
+        Optional<User> onlineUserOpt = userRepository.findById(OnlineUserid);
+        if( userOpt.isEmpty() || onlineUserOpt.isEmpty()){
+            throw new NoSuchElementException("user doesnt exist");
+        }
+
+        UserRating Rating = userRatingRepo.findRatingByOnlineUse(onlineUserOpt.get().getId(), userOpt.get().getId());
+
+        int Stars = 0;
+        if(Rating != null){
+            switch (Rating.getRating()) {
+                case ONE_STAR:
+                    Stars = 1;
+                    break;
+                case TWO_STARS:
+                    Stars = 2;
+                    break;
+                case THREE_STARS:
+                    Stars = 3;
+                    break;
+                case FOUR_STARS:
+                    Stars = 4;
+                    break;
+                case FIVE_STARS:
+                    Stars = 5;
+                    break;
+                default:
+                    throw new InvalidInputException("wrong rating");
+            }
+
+        }
+        return Stars;
 
     }
+
+
 }

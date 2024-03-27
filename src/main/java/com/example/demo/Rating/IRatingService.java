@@ -4,5 +4,7 @@ public interface IRatingService {
 
     public void rateUser(RatingRequest request, Long Id_ratingUser) throws Exception;
 
-    int getUserRating(Long userId);
+    RatingResponse getUserRating(Long userId);
+
+    int getRatingByCurrentUser(Long OnlineUserid, Long userId);
 }

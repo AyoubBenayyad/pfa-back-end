@@ -31,7 +31,9 @@ public class UserRatingController {
 
 
             ratingService.rateUser(request, user.getId());
-            return ResponseEntity.ok("rated successfully");
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "user RatedSuccessfully");
+            return ResponseEntity.ok(response);
         }
         catch(Exception e){
             throw new Exception(e.getMessage());
@@ -43,11 +45,20 @@ public class UserRatingController {
     public ResponseEntity<?> getUserRating(@PathVariable Long userId) throws Exception {
 
 
-        int userRating = ratingService.getUserRating(userId);
-        Map<String, Integer> response = new HashMap<>();
-        response.put("rating", userRating);
-        return ResponseEntity.ok(response);
+
+        RatingResponse userRating = ratingService.getUserRating(userId);
+        return ResponseEntity.ok(userRating);
     }
 
+    @GetMapping("/ratingByCurrentUser/{userId}")
+    public ResponseEntity<?> getRatingByCurrentUser(@PathVariable Long userId,@AuthenticationPrincipal User user) throws Exception {
+
+
+        int ratingByCurrentUser = ratingService.getRatingByCurrentUser(user.getId(), userId);
+        Map<String, Integer> response = new HashMap<>();
+        response.put("ratingByCurrentUser", ratingByCurrentUser);
+        return ResponseEntity.ok(response);
+
+    }
 
     }
