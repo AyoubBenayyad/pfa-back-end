@@ -44,10 +44,11 @@ public interface UserRepository  extends JpaRepository<User,Long> {
     );
 
     @Query("select distinct u from User u " +
-            "where u.Lastname like %:lname% or u.firstname like %:fname% " +
-            "OR u.firstname like %:lname% or u.Lastname like %:fname%")
+            "where u.id <> :id and (u.Lastname like %:lname% or u.firstname like %:fname% " +
+            "OR u.firstname like %:lname% or u.Lastname like %:fname%)")
     List<User> getSearchedUsers(@Param("fname") String fname,
-                                              @Param("lname") String lname);
+                                @Param("lname") String lname,
+                                @Param("id") Long id);
 
 
     @Transactional

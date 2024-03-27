@@ -62,7 +62,7 @@ public class UserProfileController {
     @GetMapping("/ProfilePosts")
     public ResponseEntity<?> getProfilePosts(@AuthenticationPrincipal User user){
 
-        List<ProfilePostReponse> profilePosts = userProfileService.getProfilePosts(user.getId());
+        List<ProfilePostReponse> profilePosts = userProfileService.getProfilePosts(user);
         return ResponseEntity.ok(profilePosts);
     }
 
@@ -141,5 +141,14 @@ public class UserProfileController {
             throw e;
         }
 
+    }
+    @PostMapping("/editProfile")
+    public ResponseEntity<?> editProfile(@AuthenticationPrincipal User user,@RequestBody EditRequest editRequest){
+      try {
+          userProfileService.editUser(user,editRequest);
+      }catch (Exception e){
+          return ResponseEntity.ok(e.getMessage());
+      }
+        return ResponseEntity.ok("Updated successfully");
     }
 }
