@@ -16,6 +16,18 @@ import java.util.Set;
 
 
 public interface UserRepository  extends JpaRepository<User,Long> {
+ Page<User> findUsersByRolesIsOrderByFirstnameAsc(appRole role,Pageable pageable);
+
+ Page<User> findUsersByRolesIsAndRateGreaterThanOrderByRateDesc(appRole role, float minRate, Pageable pageable);
+
+ Long countUsersByFiliereIs(String filiere);
+
+ @Query("select count(u) from User u where u.rate > :first and u.rate<=:second")
+   Long UsersPerstars(@Param("first") Long first,
+                      @Param("second") Long second);
+
+    Long countUsersByRolesIs(appRole role);
+    Long countUsersByRolesIsAndRateGreaterThan(appRole role,float rate);
 
     Optional<User> findByEmail(String email);
     boolean existsUserByEmail(String email);
