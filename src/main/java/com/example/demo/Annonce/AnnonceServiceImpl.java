@@ -202,8 +202,7 @@ public class AnnonceServiceImpl implements IannonceService{
                 response.setTitle(offre.getTitle());
                 response.setDescription(offre.getDescription());
                 response.setPublicationDate(offre.getPublicationDate());
-                response.setMark(offre.getMark());
-                response.setComments(offre.getComments());
+                response.setType(offre.getTypeAnnonce()==OffreType.Job ? "JOB" : "INTERNSHIP");
                 response.setCity(offre.getCity());
                 for(Photos photos : offre.getPhotos()){
                     response.getPhotos().add(photos.getImage());
@@ -212,7 +211,6 @@ public class AnnonceServiceImpl implements IannonceService{
                     response.getDomains().add(dm.getName());
                 }
                 response.setEntreprise(offre.getEntreprise());
-                response.setTypeAnnonce(offre.getTypeAnnonce());
                 offres.add(response);
             }
         return offres;
@@ -243,6 +241,7 @@ public class AnnonceServiceImpl implements IannonceService{
             intprofil.setFullName(u.getFirstname()+" "+u.getLastname());
             intprofil.setEmail(u.getEmail());
             intprofil.setImageUrl(u.getImageUrl());
+            intprofil.setRating(u.getRate());
             intprofils.add(intprofil);
         }
 
@@ -257,7 +256,7 @@ public class AnnonceServiceImpl implements IannonceService{
         List<Intprofil> intprofils = new ArrayList<>();
         for (User u: users
              ) {
-            Intprofil intprofil = new Intprofil(u.getId(),u.getImageUrl(),u.getFirstname()+" "+u.getLastname(),u.getEmail());
+            Intprofil intprofil = new Intprofil(u.getId(),u.getImageUrl(),u.getFirstname()+" "+u.getLastname(),u.getEmail(),0);
             intprofils.add(intprofil);
         }
         return intprofils;

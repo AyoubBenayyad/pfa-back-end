@@ -19,4 +19,7 @@ public class ProfilePostReponse {
     private String postUsername;
     private String postTitle;
     private String postDescription;
+    private String city;
+    private String type;
+
 }

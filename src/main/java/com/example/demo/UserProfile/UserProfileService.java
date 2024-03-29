@@ -1,6 +1,8 @@
 package com.example.demo.UserProfile;
 
 import com.example.demo.Annonce.Annonce;
+import com.example.demo.Annonce.Offre.Offre;
+import com.example.demo.Annonce.Offre.OffreType;
 import com.example.demo.Annonce.Photos;
 import com.example.demo.Domains.Domain;
 import com.example.demo.user.User;
@@ -127,9 +129,9 @@ public class UserProfileService {
         User ourUser= userOptional.get();
 
         List<ProfilePostReponse> profilePostsResponse=new ArrayList<>();
-        List<Annonce> TestPosts=userRepository.findAllAnnoncesByUserPostingOrderByPublicationDate(ourUser.getId());
-        Set<Annonce> posts= ourUser.getAnnonces();
-        for (Annonce annonce : TestPosts) {
+        List<Offre> TestPosts=userRepository.findAllAnnoncesByUserPostingOrderByPublicationDate(ourUser.getId());
+        //Set<Annonce> posts= ourUser.getAnnonces();
+        for (Offre annonce : TestPosts) {
 
             List<Domain> domains= annonce.getDomains();
             List<String> domainNames=new ArrayList<>();
@@ -152,6 +154,8 @@ public class UserProfileService {
                     .postUsername(ourUser.getFirstname()+" "+ourUser.getLastname())
                     .postDate(annonce.getPublicationDate())
                     .postTitle(annonce.getTitle())
+                     .city(annonce.getCity())
+                     .type(annonce.getTypeAnnonce()== OffreType.Job ? "JOB" : "INTERNSHIP")
                     .build());
         }
 
@@ -173,10 +177,14 @@ public class UserProfileService {
         editedUser.setEmail(editRequest.getEmail());
         editedUser.setTelephone(editRequest.getTelephone());
         editedUser.setNiveau(editRequest.getNiveau());
+
         if(!editRequest.getImgUrl().isEmpty() && !editRequest.getImgUrl().equals(null)){
             String uniqueFilename = null;
 
             try {
+                Path filePath = Paths.get(UPLOADED_FOLDER + editedUser.getImageUrl());
+                Files.deleteIfExists(filePath);
+
                 // Decode Base64 image
                 String base64Image = editRequest.getImgUrl().split(",")[1];
 

@@ -15,4 +15,5 @@ public class Intprofil {
     String imageUrl;
     String fullName;
     String email;
+    float rating;
 }

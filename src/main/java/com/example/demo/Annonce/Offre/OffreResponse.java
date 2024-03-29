@@ -23,10 +23,7 @@ public class OffreResponse {
     List<String> photos = new ArrayList<>();
     List<String> domains = new ArrayList<>();
 //todo in the front end(Ayoub)
-
-    List<Comment> comments = new ArrayList<>();
-     int mark ;
      String city;
      String entreprise;
-     OffreType typeAnnonce;
+     String type;
 }
