@@ -1,5 +1,6 @@
 package com.example.demo.user;
 
+import com.example.demo.Annonce.Offre.Offre;
 import com.example.demo.Domains.Domain;
 import com.example.demo.Annonce.Annonce;
 import jakarta.transaction.Transactional;
@@ -16,6 +17,10 @@ import java.util.Set;
 
 
 public interface UserRepository  extends JpaRepository<User,Long> {
+ @Query("SELECT a FROM Offre a WHERE a.userPosting.id = :userId ORDER BY a.publicationDate DESC ")
+ List<Offre> findAllAnnoncesByUserPostingOrderByPublicationDate(@Param("userId") Long userId);
+
+
  Page<User> findUsersByRolesIsOrderByFirstnameAsc(appRole role,Pageable pageable);
 
  Page<User> findUsersByRolesIsAndRateGreaterThanOrderByRateDesc(appRole role, float minRate, Pageable pageable);
@@ -70,6 +75,4 @@ public interface UserRepository  extends JpaRepository<User,Long> {
     int enableAppUser(String email);
 
 
-    @Query("SELECT a FROM Annonce a WHERE a.userPosting.id = :userId ORDER BY a.publicationDate DESC ")
-    List<Annonce> findAllAnnoncesByUserPostingOrderByPublicationDate(@Param("userId") Long userId);
-}
+    }
