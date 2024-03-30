@@ -1,6 +1,7 @@
 package com.example.demo.user;
 
 import com.example.demo.Annonce.Annonce;
+import com.example.demo.Annonce.Offre.Offre;
 import com.example.demo.Comments.Comment;
 import com.example.demo.Domains.Domain;
 import com.example.demo.Rating.UserRating;
@@ -14,10 +15,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Setter
 @Getter
@@ -106,6 +104,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
     private Set<Vote> votes;
+
+    @ManyToMany(mappedBy = "savingUsers",fetch = FetchType.LAZY)
+    @JsonBackReference
+    private List<Offre> bookmarked = new ArrayList<>();
 
     public User(long id, String firstname, String lastname, String mail, String password) {
         this.id=id;

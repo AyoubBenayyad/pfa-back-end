@@ -15,6 +15,10 @@ import java.util.List;
 
 public interface AnnonceRepo extends JpaRepository<Annonce,Long> {
 
+
+@Query("select off from Offre off where off.Id = :id")
+    Offre findOfferById(@Param("id") Long id);
+
     @Query("select off from Offre off where off.mark > 40 order by off.mark desc")
     Page<Offre> topPosts(Pageable pageable);
 

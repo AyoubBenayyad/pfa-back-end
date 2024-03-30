@@ -59,12 +59,7 @@ public class UserProfileController {
         }
     }
 
-    @GetMapping("/ProfilePosts")
-    public ResponseEntity<?> getProfilePosts(@AuthenticationPrincipal User user){
 
-        List<ProfilePostReponse> profilePosts = userProfileService.getProfilePosts(user.getId());
-        return ResponseEntity.ok(profilePosts);
-    }
 
     @GetMapping("/contextUser")
     public ResponseEntity<?> getContextUser(@AuthenticationPrincipal User user) throws Exception {
@@ -120,10 +115,17 @@ public class UserProfileController {
         }
     }
 
-    @GetMapping("/ProfilePosts/{userId}")
-    public ResponseEntity<?> getProfilePosts(@PathVariable Long userId){
+    @GetMapping("/ProfilePosts")
+    public ResponseEntity<?> getProfilePosts(@AuthenticationPrincipal User user){
 
-        List<ProfilePostReponse> profilePosts = userProfileService.getProfilePosts(userId);
+        List<ProfilePostReponse> profilePosts = userProfileService.getProfilePosts(user.getId());
+        return ResponseEntity.ok(profilePosts);
+    }
+
+    @GetMapping("/OthersProfilePosts/{userId}")
+    public ResponseEntity<?> getOtherProfilePosts(@PathVariable Long userId,@AuthenticationPrincipal User user){
+
+        List<ProfilePostReponse> profilePosts = userProfileService.getOtherProfilePosts(userId,user.getId());
         return ResponseEntity.ok(profilePosts);
     }
 

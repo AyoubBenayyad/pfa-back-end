@@ -130,7 +130,7 @@ public class UserProfileService {
 
         List<ProfilePostReponse> profilePostsResponse=new ArrayList<>();
         List<Offre> TestPosts=userRepository.findAllAnnoncesByUserPostingOrderByPublicationDate(ourUser.getId());
-        //Set<Annonce> posts= ourUser.getAnnonces();
+
         for (Offre annonce : TestPosts) {
 
             List<Domain> domains= annonce.getDomains();
@@ -156,6 +156,54 @@ public class UserProfileService {
                     .postTitle(annonce.getTitle())
                      .city(annonce.getCity())
                      .type(annonce.getTypeAnnonce()== OffreType.Job ? "JOB" : "INTERNSHIP")
+                    .build());
+        }
+
+        return profilePostsResponse;
+    }
+
+public List<ProfilePostReponse> getOtherProfilePosts(Long userId,Long user) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if(userOptional.isEmpty()){
+            throw new BadCredentialsException("user doesnt exist");
+        }
+        User ourUser= userOptional.get();
+
+        Optional<User> userOptional2 = userRepository.findById(user);
+        if(userOptional2.isEmpty()){
+            throw new BadCredentialsException("user doesnt exist");
+        }
+        User connectedUser= userOptional2.get();
+
+        List<ProfilePostReponse> profilePostsResponse=new ArrayList<>();
+        List<Offre> TestPosts=userRepository.findAllAnnoncesByUserPostingOrderByPublicationDate(ourUser.getId());
+
+        for (Offre annonce : TestPosts) {
+
+            List<Domain> domains= annonce.getDomains();
+            List<String> domainNames=new ArrayList<>();
+
+            for(Domain domain : domains){
+                domainNames.add(domain.getName());
+            }
+
+            List<Photos> photos= annonce.getPhotos();
+            List<String> PostPhotos=new ArrayList<>();
+
+            for(Photos photo : photos){
+                PostPhotos.add(photo.getImage());
+            }
+             profilePostsResponse.add(ProfilePostReponse.builder()
+                    .postId(annonce.getId())
+                    .postDomains(domainNames)
+                    .postImages(PostPhotos)
+                    .postDescription(annonce.getDescription())
+                    .postUsername(ourUser.getFirstname()+" "+ourUser.getLastname())
+                    .postDate(annonce.getPublicationDate())
+                    .postTitle(annonce.getTitle())
+                     .city(annonce.getCity())
+                     .type(annonce.getTypeAnnonce()== OffreType.Job ? "JOB" : "INTERNSHIP")
+                     .bookmarked(annonce.getSavingUsers().contains(connectedUser))
                     .build());
         }
 
