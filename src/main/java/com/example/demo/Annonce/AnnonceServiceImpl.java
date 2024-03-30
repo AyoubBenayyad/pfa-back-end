@@ -196,7 +196,7 @@ public class AnnonceServiceImpl implements IannonceService{
                 userInfos.setFullName(offre.getUserPosting().getFirstname()+
                         " "+ offre.getUserPosting().getLastname());
                 userInfos.setImage(offre.getUserPosting().getImageUrl());
-
+                response.setBookmarked(offre.getSavingUsers().contains(userConnected));
                 response.setUserInfos(userInfos);
                 response.setId(offre.getId());
                 response.setTitle(offre.getTitle());
@@ -260,6 +260,57 @@ public class AnnonceServiceImpl implements IannonceService{
             intprofils.add(intprofil);
         }
         return intprofils;
+    }
+
+    @Override
+    public void bookmarkPost(String userName, Long id) {
+        Optional<User> user = userRepository.findByEmail(userName);
+        User savingUser = user.get();
+        Offre offreSaved = annonceRepo.findOfferById(id);
+        savingUser.getBookmarked().add(offreSaved);
+        offreSaved.getSavingUsers().add(savingUser);
+        userRepository.save(savingUser);
+        annonceRepo.save(offreSaved);
+    }
+    @Override
+    public void unbookmarkPost(String userName, Long id) {
+        Optional<User> user = userRepository.findByEmail(userName);
+        User savingUser = user.get();
+        Offre offreSaved = annonceRepo.findOfferById(id);
+        savingUser.getBookmarked().remove(offreSaved);
+        offreSaved.getSavingUsers().remove(savingUser);
+        userRepository.save(savingUser);
+        annonceRepo.save(offreSaved);
+    }
+@Override
+    public List<OffreResponse> bookmarkedPost(String userName) {
+        Optional<User> user = userRepository.findByEmail(userName);
+        User currentUser = user.get();
+        List<OffreResponse> offres = new ArrayList<>();
+        for(Offre offre : currentUser.getBookmarked()){
+            OffreResponse response = new OffreResponse();
+            UserInfos userInfos = new UserInfos();
+            userInfos.setId(offre.getUserPosting().getId());
+            userInfos.setFullName(offre.getUserPosting().getFirstname()+
+                    " "+ offre.getUserPosting().getLastname());
+            userInfos.setImage(offre.getUserPosting().getImageUrl());
+            response.setBookmarked(offre.getSavingUsers().contains(currentUser));
+            response.setUserInfos(userInfos);
+            response.setId(offre.getId());
+            response.setTitle(offre.getTitle());
+            response.setDescription(offre.getDescription());
+            response.setPublicationDate(offre.getPublicationDate());
+            response.setType(offre.getTypeAnnonce()==OffreType.Job ? "JOB" : "INTERNSHIP");
+            response.setCity(offre.getCity());
+            for(Photos photos : offre.getPhotos()){
+                response.getPhotos().add(photos.getImage());
+            }
+            for(Domain dm : offre.getDomains()){
+                response.getDomains().add(dm.getName());
+            }
+            offres.add(response);
+        }
+        return offres;
     }
 
 

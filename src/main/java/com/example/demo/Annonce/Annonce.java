@@ -37,6 +37,15 @@ public class Annonce {
     @JsonBackReference
     User userPosting;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "BookMarked_Posts",
+            joinColumns = @JoinColumn(name = "annonce_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    @JsonManagedReference
+    List<User> savingUsers = new ArrayList<>();
+
     @OneToMany(mappedBy = "postCommented")
     @JsonManagedReference
     List<Comment> comments = new ArrayList<>();

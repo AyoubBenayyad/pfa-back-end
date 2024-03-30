@@ -22,8 +22,8 @@ public class OffreResponse {
     UserInfos userInfos;
     List<String> photos = new ArrayList<>();
     List<String> domains = new ArrayList<>();
-//todo in the front end(Ayoub)
      String city;
      String entreprise;
      String type;
+     boolean bookmarked;
 }

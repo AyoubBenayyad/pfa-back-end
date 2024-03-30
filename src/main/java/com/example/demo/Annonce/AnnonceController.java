@@ -97,6 +97,30 @@ public class AnnonceController {
         return ResponseEntity.ok(annonceService.findUsers(user.getFname(),user.getLname(),username));
     }
 
+    @GetMapping("/bookmark/{id}")
+    public ResponseEntity<?> bookmark(@PathVariable Long id ){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        annonceService.bookmarkPost(username,id);
+        return ResponseEntity.ok("post with "+id+ "saved ");
+    }
+
+    @GetMapping("/unbookmark/{id}")
+    public ResponseEntity<?> unbookmark(@PathVariable Long id ){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        annonceService.unbookmarkPost(username,id);
+        return ResponseEntity.ok("post with "+id+ "saved ");
+    }
+@GetMapping("/bookmarkedPosts")
+    public ResponseEntity<?> bookmarkedPosts(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        return ResponseEntity.ok(annonceService.bookmarkedPost(username));
+    }
+
 
 
 

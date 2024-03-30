@@ -14,4 +14,7 @@ public interface IannonceService {
     public List<OffreResponse> getPosts(FilterRequest request,String username);
     public List<Intprofil> getInterestingProfils(String username);
     public List<Intprofil> findUsers(String fname,String lname,String username);
+    public void bookmarkPost(String userName,Long id);
+    public void unbookmarkPost(String userName,Long id);
+    public List<OffreResponse> bookmarkedPost(String userName);
 }

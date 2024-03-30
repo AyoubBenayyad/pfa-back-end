@@ -21,5 +21,6 @@ public class ProfilePostReponse {
     private String postDescription;
     private String city;
     private String type;
+    private boolean bookmarked;
 
 }

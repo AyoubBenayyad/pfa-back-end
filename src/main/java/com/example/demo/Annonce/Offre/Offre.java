@@ -15,4 +15,5 @@ public class Offre extends Annonce {
     private String city;
     private String entreprise;
     private OffreType typeAnnonce;
+
 }
