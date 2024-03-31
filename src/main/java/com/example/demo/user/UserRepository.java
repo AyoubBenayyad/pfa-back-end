@@ -17,8 +17,8 @@ import java.util.Set;
 
 
 public interface UserRepository  extends JpaRepository<User,Long> {
- @Query("SELECT a FROM Offre a WHERE a.userPosting.id = :userId ORDER BY a.publicationDate DESC ")
- List<Offre> findAllAnnoncesByUserPostingOrderByPublicationDate(@Param("userId") Long userId);
+ @Query("SELECT a FROM Annonce a WHERE a.userPosting.id = :userId ORDER BY a.publicationDate DESC ")
+ List<Annonce> findAllAnnoncesByUserPostingOrderByPublicationDate(@Param("userId") Long userId);
 
 
  Page<User> findUsersByRolesIsOrderByFirstnameAsc(appRole role,Pageable pageable);

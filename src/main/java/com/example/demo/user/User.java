@@ -107,7 +107,7 @@ public class User implements UserDetails {
 
     @ManyToMany(mappedBy = "savingUsers",fetch = FetchType.LAZY)
     @JsonBackReference
-    private List<Offre> bookmarked = new ArrayList<>();
+    private List<Annonce> bookmarked = new ArrayList<>();
 
     public User(long id, String firstname, String lastname, String mail, String password) {
         this.id=id;

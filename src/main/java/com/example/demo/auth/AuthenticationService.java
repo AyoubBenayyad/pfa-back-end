@@ -62,7 +62,7 @@ public class AuthenticationService {
                 || request.getLastname().isBlank() || !emailValidation(request.getEmail())
                 || request.getBiographie().isBlank() || request.getFiliere().isBlank()
                 || request.getNiveau().isBlank() || request.getCne().isBlank()
-                || request.getImage().isBlank() || request.getDomains().size() < 3
+                || request.getImage().isBlank() || request.getDomains().size() < 1
         )
         {
             throw new InvalidInputException("Invalid Inputs");

@@ -1,6 +1,7 @@
 package com.example.demo.UserProfile;
 
 import com.example.demo.Annonce.Annonce;
+import com.example.demo.Annonce.AnnonceRepo;
 import com.example.demo.Annonce.Offre.Offre;
 import com.example.demo.Annonce.Offre.OffreType;
 import com.example.demo.Annonce.Photos;
@@ -129,9 +130,9 @@ public class UserProfileService {
         User ourUser= userOptional.get();
 
         List<ProfilePostReponse> profilePostsResponse=new ArrayList<>();
-        List<Offre> TestPosts=userRepository.findAllAnnoncesByUserPostingOrderByPublicationDate(ourUser.getId());
+        List<Annonce> TestPosts=userRepository.findAllAnnoncesByUserPostingOrderByPublicationDate(ourUser.getId());
 
-        for (Offre annonce : TestPosts) {
+        for (Annonce annonce : TestPosts) {
 
             List<Domain> domains= annonce.getDomains();
             List<String> domainNames=new ArrayList<>();
@@ -155,7 +156,7 @@ public class UserProfileService {
                     .postDate(annonce.getPublicationDate())
                     .postTitle(annonce.getTitle())
                      .city(annonce.getCity())
-                     .type(annonce.getTypeAnnonce()== OffreType.Job ? "JOB" : "INTERNSHIP")
+                     .type(annonce.getTypeAnnonce()== OffreType.Job ? "JOB" : annonce.getTypeAnnonce()== OffreType.Internship ? "INTERNSHIP" : null)
                     .build());
         }
 
@@ -176,9 +177,9 @@ public List<ProfilePostReponse> getOtherProfilePosts(Long userId,Long user) {
         User connectedUser= userOptional2.get();
 
         List<ProfilePostReponse> profilePostsResponse=new ArrayList<>();
-        List<Offre> TestPosts=userRepository.findAllAnnoncesByUserPostingOrderByPublicationDate(ourUser.getId());
+        List<Annonce> TestPosts=userRepository.findAllAnnoncesByUserPostingOrderByPublicationDate(ourUser.getId());
 
-        for (Offre annonce : TestPosts) {
+        for (Annonce annonce : TestPosts) {
 
             List<Domain> domains= annonce.getDomains();
             List<String> domainNames=new ArrayList<>();
@@ -202,7 +203,7 @@ public List<ProfilePostReponse> getOtherProfilePosts(Long userId,Long user) {
                     .postDate(annonce.getPublicationDate())
                     .postTitle(annonce.getTitle())
                      .city(annonce.getCity())
-                     .type(annonce.getTypeAnnonce()== OffreType.Job ? "JOB" : "INTERNSHIP")
+                     .type(annonce.getTypeAnnonce()== OffreType.Job ? "JOB" : annonce.getTypeAnnonce()== OffreType.Internship ? "INTERNSHIP" : null)
                      .bookmarked(annonce.getSavingUsers().contains(connectedUser))
                     .build());
         }

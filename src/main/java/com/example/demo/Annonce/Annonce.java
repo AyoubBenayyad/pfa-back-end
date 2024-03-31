@@ -1,6 +1,7 @@
 package com.example.demo.Annonce;
 
 
+import com.example.demo.Annonce.Offre.OffreType;
 import com.example.demo.Comments.Comment;
 import com.example.demo.Domains.Domain;
 import com.example.demo.Vote.Vote;
@@ -19,8 +20,6 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "Type", discriminatorType = DiscriminatorType.STRING)
 public class Annonce {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +29,10 @@ public class Annonce {
     @Temporal(TemporalType.DATE)
     Date publicationDate;
     int mark = 0;
+    private String city;
+    private String entreprise;
+    private String type;
+    private OffreType typeAnnonce;
 
 
     @ManyToOne

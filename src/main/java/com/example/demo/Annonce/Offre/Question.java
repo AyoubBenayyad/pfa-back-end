@@ -4,7 +4,7 @@ import com.example.demo.Annonce.Annonce;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
-@Entity
-@DiscriminatorValue("question")
+//@Entity
+//@DiscriminatorValue("question")
 public class Question extends Annonce {
 }
