@@ -9,8 +9,8 @@ import lombok.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@DiscriminatorValue("offre")
+//@Entity
+//@DiscriminatorValue("offre")
 public class Offre extends Annonce {
     private String city;
     private String entreprise;

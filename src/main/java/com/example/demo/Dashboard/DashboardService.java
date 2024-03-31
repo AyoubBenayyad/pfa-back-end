@@ -1,5 +1,6 @@
 package com.example.demo.Dashboard;
 
+import com.example.demo.Annonce.Annonce;
 import com.example.demo.Annonce.AnnonceRepo;
 import com.example.demo.Annonce.Offre.Offre;
 import com.example.demo.Annonce.Offre.OffreType;
@@ -242,7 +243,7 @@ public class DashboardService {
         List<TopPostsResponse> response = new ArrayList<>();
         Pageable pageable = PageRequest.
                 of(page , 3);
-        for(Offre offre : annonceRepo.topPosts(pageable)){
+        for(Annonce offre : annonceRepo.topPosts(pageable)){
             TopUsersResponse topUsersResponse = new TopUsersResponse(
                     offre.getUserPosting().getFirstname()+" "+offre.getUserPosting().getLastname(),
                     offre.getUserPosting().getEmail(),

@@ -8,6 +8,7 @@ import com.example.demo.Domains.DomainRepo;
 import com.example.demo.Exceptions.InvalidInputException;
 import com.example.demo.user.User;
 import com.example.demo.user.UserRepository;
+import org.hibernate.sql.ast.tree.expression.Over;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -62,7 +63,8 @@ public class AnnonceServiceImpl implements IannonceService{
 
         }
 
-        Offre annonce = new Offre();
+        Annonce annonce = new Annonce();
+        annonce.setType("offer");
         annonce.setTitle(annonceRequest.getTitle());
         annonce.setDescription(annonceRequest.getDescription());
         annonce.setCity(annonceRequest.getCity());
@@ -143,7 +145,8 @@ public class AnnonceServiceImpl implements IannonceService{
         }
 
         List<Domain> domains = userRepository.findDomainsByUserId(userPosting.getId());
-        Question question = new Question();
+        Annonce question = new Annonce();
+        question.setType("question");
         question.setTitle(request.getTitle());
         question.setDescription(request.getDescription());
         question.setDomains(domains);
@@ -187,9 +190,9 @@ public class AnnonceServiceImpl implements IannonceService{
         }
 
         List<OffreResponse> offres = new ArrayList<>();
-        Page<Offre> result = annonceRepo.filteredPosts(domain, postType, city, userConnected.getId(),pageable);
+        Page<Annonce> result = annonceRepo.filteredPosts(domain, postType, city, userConnected.getId(),pageable);
 
-        for(Offre offre : result){
+        for(Annonce offre : result){
                 OffreResponse response = new OffreResponse();
                 UserInfos userInfos = new UserInfos();
                 userInfos.setId(offre.getUserPosting().getId());
@@ -202,7 +205,7 @@ public class AnnonceServiceImpl implements IannonceService{
                 response.setTitle(offre.getTitle());
                 response.setDescription(offre.getDescription());
                 response.setPublicationDate(offre.getPublicationDate());
-                response.setType(offre.getTypeAnnonce()==OffreType.Job ? "JOB" : "INTERNSHIP");
+                response.setType(offre.getTypeAnnonce()==OffreType.Job ? "JOB" : offre.getTypeAnnonce()==OffreType.Internship ? "INTERNSHIP" : null);
                 response.setCity(offre.getCity());
                 for(Photos photos : offre.getPhotos()){
                     response.getPhotos().add(photos.getImage());
@@ -266,7 +269,7 @@ public class AnnonceServiceImpl implements IannonceService{
     public void bookmarkPost(String userName, Long id) {
         Optional<User> user = userRepository.findByEmail(userName);
         User savingUser = user.get();
-        Offre offreSaved = annonceRepo.findOfferById(id);
+        Annonce offreSaved = annonceRepo.findOfferById(id);
         savingUser.getBookmarked().add(offreSaved);
         offreSaved.getSavingUsers().add(savingUser);
         userRepository.save(savingUser);
@@ -276,7 +279,7 @@ public class AnnonceServiceImpl implements IannonceService{
     public void unbookmarkPost(String userName, Long id) {
         Optional<User> user = userRepository.findByEmail(userName);
         User savingUser = user.get();
-        Offre offreSaved = annonceRepo.findOfferById(id);
+        Annonce offreSaved = annonceRepo.findOfferById(id);
         savingUser.getBookmarked().remove(offreSaved);
         offreSaved.getSavingUsers().remove(savingUser);
         userRepository.save(savingUser);
@@ -287,7 +290,7 @@ public class AnnonceServiceImpl implements IannonceService{
         Optional<User> user = userRepository.findByEmail(userName);
         User currentUser = user.get();
         List<OffreResponse> offres = new ArrayList<>();
-        for(Offre offre : currentUser.getBookmarked()){
+        for(Annonce offre : currentUser.getBookmarked()){
             OffreResponse response = new OffreResponse();
             UserInfos userInfos = new UserInfos();
             userInfos.setId(offre.getUserPosting().getId());
@@ -310,8 +313,11 @@ public class AnnonceServiceImpl implements IannonceService{
             }
             offres.add(response);
         }
+
         return offres;
     }
+
+
 
 
 }
