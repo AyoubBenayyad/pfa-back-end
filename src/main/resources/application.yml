@@ -5,7 +5,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/pfadb
+    url: jdbc:postgresql://db:5432/pfadb
     username: username
     password: password
     driver-class-name: org.postgresql.Driver
@@ -33,4 +33,4 @@ spring:
             enable: true
           connection-timeout: 5000
           timeout: 3000
-          write timeout: 5000
+          write-timeout: 5000
