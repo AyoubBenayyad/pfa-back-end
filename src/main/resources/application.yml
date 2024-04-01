@@ -5,7 +5,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://db:5432/pfadb
+    url: jdbc:postgresql://localhost:5432/pfadb
     username: username
     password: password
     driver-class-name: org.postgresql.Driver
