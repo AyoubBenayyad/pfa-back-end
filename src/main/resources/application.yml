@@ -33,4 +33,5 @@ spring:
             enable: true
           connection-timeout: 5000
           timeout: 3000
-          write timeout: 5000
+          write-timeout: 5000
+
