@@ -1,6 +1,5 @@
 package com.example.demo.user;
 
-import com.example.demo.Annonce.Offre.Offre;
 import com.example.demo.Domains.Domain;
 import com.example.demo.Annonce.Annonce;
 import jakarta.transaction.Transactional;
@@ -75,4 +74,9 @@ public interface UserRepository  extends JpaRepository<User,Long> {
     int enableAppUser(String email);
 
 
-    }
+
+    @Query("SELECT u FROM User u WHERE u.Status = ?1 ")
+    List<User> findAllByStatus(String status);
+
+
+}

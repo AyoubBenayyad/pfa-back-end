@@ -1,17 +1,21 @@
-package com.example.demo.Comments;
-
+package com.example.demo.LiveChat.ChatMessage;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentRequest {
-    private Long IdCommentedPost;
-    private String comment;
+
+public class ChatMessageDto {
+    String content;
+    Long senderId;
+
+    Long recipientId;
+
+
 
 }

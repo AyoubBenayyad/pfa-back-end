@@ -37,6 +37,7 @@ public class User implements UserDetails {
     @JsonIgnore
     private String password;
 
+    private String Status;
     @OneToOne(mappedBy = "user")
     @JsonBackReference
     private CNE cne;
