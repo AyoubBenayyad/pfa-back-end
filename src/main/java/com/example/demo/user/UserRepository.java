@@ -60,4 +60,9 @@ public interface UserRepository  extends JpaRepository<User,Long> {
 
     @Query("SELECT a FROM Annonce a WHERE a.userPosting.id = :userId ORDER BY a.publicationDate DESC ")
     List<Annonce> findAllAnnoncesByUserPostingOrderByPublicationDate(@Param("userId") Long userId);
+
+    @Query("SELECT u FROM User u WHERE u.Status = ?1 ")
+    List<User> findAllByStatus(String status);
+
+
 }
